@@ -1,0 +1,36 @@
+{
+  "name": "arbyte-rest-api",
+  "version": "1.0.0",
+  "description": "API usada para ensinar resful APIs na Arbyte",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "nodemon -r dotenv/config server",
+    "migration:create": "knex migrate:make",
+    "migration:up": "knex migrate:latest",
+    "migration:up:prod": "knex migrate:latest --env production",
+    "migration:down": "knex migrate:down"
+  },
+  "keywords": [
+    "node"
+  ],
+  "author": "Henrique Brumatti",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.21.1",
+    "moment": "^2.27.0",
+    "morgan": "^1.10.0",
+    "pg": "^8.2.2",
+    "serve": "^11.3.2",
+    "sqlite3": "^5.0.0"
+  },
+  "devDependencies": {
+    "jest": "^26.1.0",
+    "nodemon": "^2.0.4"
+  }
+}
