@@ -1,4 +1,4 @@
-const jwt = require('../../useful/jwt')
+const jwt = require('../../utils/jwt')
 const userService = require('../../services/users')
 const handleError = require('../../controllers/handleError')
 
