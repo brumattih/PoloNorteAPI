@@ -1,9 +1,12 @@
 const { Router } = require('express')
 const router = new Router()
 
+const cors = require('cors')
+
 const users = require('./users')
 const equipments = require('./equipments')
 
+router.use(cors())
 router.use(users)
 router.use(equipments)
 
