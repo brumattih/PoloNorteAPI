@@ -1,7 +1,12 @@
 const crypto = require('crypto')
 
-const generateSalt = () => {
-    return crypto.randomBytes(16).toString('hex')
+const generateSalt = (size = 16) => {
+    return crypto.randomBytes(size).toString('hex')
+}
+
+const generatePassword = () => {
+    return generateSalt(4)
+
 }
 
 const encryptPassword = (password, salt = generateSalt()) => {
@@ -21,5 +26,6 @@ const encryptPassword = (password, salt = generateSalt()) => {
 }
 
 module.exports = {
-    encryptPassword
+    encryptPassword,
+    generatePassword
 }

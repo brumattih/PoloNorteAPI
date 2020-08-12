@@ -1,10 +1,9 @@
 const repository = require('../repositories/equipments')
 
-
 const getById = async (id) => {
     const equipment = await repository.getById(id)
-    if (!equipment) {
-        throw { status: 404, message: "Not found" }
+    if (!equipment.id) {
+        throw { status: 404, message: "Equipment not found!" }
     }
     return equipment
 }

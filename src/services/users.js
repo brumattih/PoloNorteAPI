@@ -1,16 +1,21 @@
 const User = require('../models/User')
-const { encryptPassword } = require('../utils/encrypt')
 const repository = require('../repositories/users')
+
+const moment = require('moment')
+const utcNow = moment().utc().format()
+
+const { encryptPassword, generatePassword } = require('../utils/encrypt')
 const { createToken } = require('../utils/jwt')
+const { sendNewPassword } = require('../utils/sendEmail')
 
 const create = async (data) => {
 
     const userFound = await repository.getOne({ cpf: data.cpf })
-    
+
     if (userFound.id) {
-        throw {status: 409, message: 'User already exists'}
+        throw { status: 409, message: 'User already exists' }
     }
-  
+
     const user = new User({
         ...data, id: undefined,
         created_at: undefined,
@@ -45,14 +50,34 @@ const login = async loginData => {
 
 const getById = async id => {
     const user = await repository.getOne({ id: id })
-    if (!user) {
+    if (!user.id) {
         throw { status: 404, message: "Not found" }
     }
     return user
 }
 
+const forgotPassword = async data => {
+    const userFound = await repository.getOne({ cpf: data.cpf })
+    if (!userFound.id) {
+        return
+        //throw { status: 404, message: "Not found" }
+    }
+
+    const newPassword = generatePassword()
+
+    sendNewPassword(userFound.name, userFound.email, newPassword)
+
+    const { salt, encryptedPassword: password } = encryptPassword(newPassword)
+
+    const updated = await repository.update(userFound.id, { password, salt, updated_at: utcNow })
+
+    return updated
+}
+
+
 module.exports = {
     create,
     login,
-    getById
+    getById,
+    forgotPassword
 }

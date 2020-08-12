@@ -13,6 +13,14 @@ const login = async (req, res) => {
     }
 }
 
+const forgotPassword = (req, res) => {
+    service.forgotPassword(req.body)
+
+    res.status(202).end()
+}
+
+
 module.exports = {
-    login
+    login,
+    forgotPassword
 }
