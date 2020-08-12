@@ -8,6 +8,13 @@ const getOne = async params => {
     return new User(user)
 }
 
+//UPDATE users SET salt = ?, password = ? WHERE id = ?;
+const update = async (id, data) => {
+    const [user] = await knex(tableName).where({id: id}).update(data).returning('*')
+    return new User(user)
+}
+
 module.exports = {
-    getOne
+    getOne,
+    update
 }
