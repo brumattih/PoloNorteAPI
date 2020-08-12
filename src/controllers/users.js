@@ -14,7 +14,7 @@ const login = async (req, res) => {
 }
 
 const forgotPassword = (req, res) => {
-    service.forgotPassword(req.body)
+    service.forgotPassword(req.body).catch(() => {})
 
     res.status(202).end()
 }
@@ -22,5 +22,5 @@ const forgotPassword = (req, res) => {
 
 module.exports = {
     login,
-    forgotPassword
+    forgotPassword,
 }
