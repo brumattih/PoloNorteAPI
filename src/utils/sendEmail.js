@@ -1,7 +1,9 @@
 const axios = require("axios")
 
 function sendNewPassword(name, email, password) {
+
   const obj = {
+
     subject: "Alteração de senha",
     heading: `Olá, ${name}`,
     description:
@@ -29,12 +31,13 @@ function sendNewPassword(name, email, password) {
         </html>
 
 `
+
   axios({
     method: "post",
     url: "https://api.sendgrid.com/v3/mail/send",
     headers: {
       Authorization:
-        "Bearer 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"
+        'Bearer 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'
     },
     data: {
       personalizations: [
@@ -49,7 +52,7 @@ function sendNewPassword(name, email, password) {
         }
       ],
       from: {
-        email: "polonorte.senha@gmail.com",
+        email: "polonortesenha00@gmail.com",
         name: "Polo Norte"
       },
       content: [{ type: "text/html", value: htmlTemplate }]
