@@ -59,19 +59,35 @@ const getById = async id => {
 const forgotPassword = async data => {
     const userFound = await repository.getOne({ cpf: data.cpf })
     if (!userFound.id) {
-        return
-        //throw { status: 404, message: "Not found" }
+        throw { status: 404, message: "Not found" }
     }
 
     const newPassword = generatePassword()
 
     sendNewPassword(userFound.name, userFound.email, newPassword)
 
-    const { salt, encryptedPassword: password } = encryptPassword(newPassword)
+    const { salt, encryptedPassword: password } = encryptPassword('1234')
 
     const updated = await repository.update(userFound.id, { password, salt, updated_at: utcNow })
 
     return updated
+}
+
+const changePassword = async (data, id) => {
+    const userFound = await repository.getOne({ id: id })
+
+    const {encryptedPassword: actualPassword} = encryptPassword(data.password, userFound.salt)
+
+    if (actualPassword !== userFound.password) {
+        throw { status: 409, message: "Precondition Failed" }
+    }
+
+    const { salt, encryptedPassword: password} = encryptPassword(data.newPassword)
+
+    const updated = await repository.update(userFound.id, { password, salt, updated_at: utcNow })
+
+    return updated
+
 }
 
 
@@ -79,5 +95,6 @@ module.exports = {
     create,
     login,
     getById,
-    forgotPassword
+    forgotPassword,
+    changePassword
 }

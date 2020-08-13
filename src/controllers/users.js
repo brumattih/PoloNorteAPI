@@ -14,13 +14,25 @@ const login = async (req, res) => {
 }
 
 const forgotPassword = (req, res) => {
-    service.forgotPassword(req.body)
+    service.forgotPassword(req.body).catch(() => {})
 
     res.status(202).end()
 }
 
+const changePassword = async (req, res) => {
+    try {
+        if (!req.body.password || !req.body.newPassword || req.body.password === req.body.newPassword) {
+            throw { status: 400, message: "Invalid data" }
+        }
+        const data = await service.changePassword(req.body, req.user.id)
+        res.status(204).end()
+    } catch (error) {
+        handleError(res, error)
+    }
+}
 
 module.exports = {
     login,
-    forgotPassword
+    forgotPassword,
+    changePassword,
 }
