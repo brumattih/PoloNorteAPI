@@ -6,7 +6,7 @@ const create = async (req, res) => {
     try {
         const maintenance = new Maintenance(req.body)
         maintenance.user_id = req.user.id
-        if (!maintenance.equipment_id || !maintenance.description) {
+        if (!maintenance.equipment_id || !maintenance.description.trim()) {
             throw { status: 400, message: "Invalid data" }
         }
         const created = await service.create(maintenance)
