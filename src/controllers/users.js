@@ -1,21 +1,9 @@
 const service = require('../services/users')
 const handleError = require('./handleError')
 
-const create = async (req, res) => {
-    try {
-        if (!req.body.name || !req.body.email || !req.body.password) {
-            throw { status: 404, message: "Invalid data" }
-        }
-        const created = await service.create(req.body)
-        res.status(201).json(created)
-    } catch (error) {
-        handleError(res, error)
-    }
-}
-
 const login = async (req, res) => {
     try {
-        if (!req.body.email || !req.body.password) {
+        if (!req.body.cpf || !req.body.password) {
             throw { status: 404, message: "Invalid data" }
         }
         const data = await service.login(req.body)
@@ -25,7 +13,26 @@ const login = async (req, res) => {
     }
 }
 
+const forgotPassword = (req, res) => {
+    service.forgotPassword(req.body).catch(() => {})
+
+    res.status(202).end()
+}
+
+const changePassword = async (req, res) => {
+    try {
+        if (!req.body.password || !req.body.newPassword || req.body.password === req.body.newPassword) {
+            throw { status: 400, message: "Invalid data" }
+        }
+        const data = await service.changePassword(req.body, req.user.id)
+        res.status(204).end()
+    } catch (error) {
+        handleError(res, error)
+    }
+}
+
 module.exports = {
-    create,
-    login
+    login,
+    forgotPassword,
+    changePassword,
 }
