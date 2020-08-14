@@ -37,7 +37,7 @@ function sendNewPassword(name, email, password) {
     url: "https://api.sendgrid.com/v3/mail/send",
     headers: {
       Authorization:
-        'Bearer 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'
+        'Bearer ' + process.env.SENDGRID_API_KEY
     },
     data: {
       personalizations: [

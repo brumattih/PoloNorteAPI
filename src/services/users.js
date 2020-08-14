@@ -62,11 +62,13 @@ const forgotPassword = async data => {
         throw { status: 404, message: "Not found" }
     }
 
-    const newPassword = generatePassword()
+    // const newPassword = generatePassword()
+    // sendNewPassword(userFound.name, userFound.email, newPassword)
+    
+    const newPassword = userFound.cpf.substr(-4) + userFound.name.substr(0, 2)
+    console.log(newPassword)
 
-    sendNewPassword(userFound.name, userFound.email, newPassword)
-
-    const { salt, encryptedPassword: password } = encryptPassword('1234')
+    const { salt, encryptedPassword: password } = encryptPassword(newPassword.toLowerCase())
 
     const updated = await repository.update(userFound.id, { password, salt, updated_at: utcNow })
 
