@@ -41,7 +41,6 @@ const forgotPassword = async data => {
     // sendNewPassword(userFound.name, userFound.email, newPassword)
     
     const newPassword = userFound.cpf.substr(-4) + userFound.name.substr(0, 2)
-    console.log(newPassword)
 
     const { salt, encryptedPassword: password } = encryptPassword(newPassword.toLowerCase())
 
